@@ -12,9 +12,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongoose": "^5.13.3"
   },
   "devDependencies": {
+    "cypress": "^8.0.0",
     "eslint": "^7.31.0",
     "husky": "^7.0.1",
     "lint-staged": "^11.0.1",
