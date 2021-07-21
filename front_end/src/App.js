@@ -1,23 +1,55 @@
-import logo from './logo.svg';
+import * as React from 'react';
 import './App.css';
+// import Holidays from './Holidays'
+import NewForm from './NewForm.js'
+import { useEffect, useState } from "react";
 
 function App() {
+ 
+  const [holidays, setHolidays] = useState([]);
+
+  const addHoliday = (holiday) => {
+    setHolidays([...holidays, holiday]);
+  };
+
+  useEffect(() => {
+    fetch("/holidays")
+      .then(
+        (data) => data.json(),
+        (err) => console.log(err)
+      )
+      .then(
+        (parsedData) => setHolidays(parsedData),
+        (err) => console.log(err)
+
+      );
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+       <h1>Holidays! Celebrate!</h1>
+       <NewForm handleAddHoliday={addHoliday}/>
+        {/* <Holidays handleSetHoliday={setHoliday}/>  */}
+     
+        <table style={{border:"1px solid"}}>
+            <tbody>
+                    <tr>
+                        <th> Title </th>
+                        <th> Likes</th>
+                        <th>Description </th>
+                    </tr>
+                        {holidays.map((holiday) => {
+                        return (
+                            <tr key={holiday._id}>
+                            <td> {holiday.name}</td>
+                            <td> {holiday.likes}</td>
+                            <td> {holiday.description}</td>
+                            </tr>
+                        );
+                        })}
+                    </tbody>
+            </table>
+          
     </div>
   );
 }
