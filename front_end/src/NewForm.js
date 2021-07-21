@@ -15,6 +15,14 @@ const NewForm = (props) => {
           .catch((error) => console.error({ Error: error }));
       }
 
+      // fetch("/holidays", {method: "POST"}) basic
+
+      //const handleSubmit = (event) => {
+//      event.preventDefault();
+// event.preventDefault();
+// const title = event.target.elements.title.value
+     // }
+
     return (    
     <div>
         <form onSubmit={handleSubmit}>
