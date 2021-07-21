@@ -15,6 +15,16 @@ const NewForm = (props) => {
           .catch((error) => console.error({ Error: error }));
       }
 
+/*
+same as above fetch actually
+curl 
+-X POST 
+-H "Content-Type: application/json" 
+-d '{"name":"World Kindness"}' 
+http://localhost:3003/holidays
+
+*/
+
       // fetch("/holidays", {method: "POST"}) basic
 
       //const handleSubmit = (event) => {
