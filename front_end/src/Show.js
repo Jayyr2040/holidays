@@ -1,18 +1,22 @@
-const Show = ({ holiday }) => {
-    if (holiday === null) {
+const Show = (props) => {
+    if (props.holiday === null) {
       return null;  
     }
   
-    const celebrated = holiday.celebrated ? "Yes" : "No";
+    const celebrated = props.holiday.celebrated ? "Yes" : "No";
   
+    const handleClick = () => {
+      props.increaseLikes(props.holiday)
+    }
     return (
       <div>
-        <h2>{holiday.name}</h2>
+        <h2>{props.holiday.name}</h2>
         <h3>Celebrated: {celebrated}</h3>
-        <p>{holiday.description}</p>
-        <p>Likes: {holiday.likes}</p>
+        <p>{props.holiday.description}</p>
+        <p>Likes: {props.holiday.likes}</p>
+        <button onClick={handleClick}>Like </button>
         <ul>
-          {holiday.tags.map((tag) => (
+          {props.holiday.tags.map((tag) => (
             <li>{tag}</li>
           ))}
         </ul>

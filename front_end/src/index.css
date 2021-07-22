@@ -13,5 +13,9 @@ code {
 }
 
 .celebrated {
+  color: green
+}
+
+.notcele {
   color: red
 }

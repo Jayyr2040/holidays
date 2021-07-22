@@ -5,6 +5,11 @@ import UpdateForm from './UpdateForm'
 const Holidays = (props) => {
 
     const [holiday, setHoliday] = React.useState(null);
+    //const [holi, setHoli] = React.useState([]);
+
+   // const getProps = React.useCallback(function () {
+   //   setHoli(props);
+   // }, [props]);
 
     React.useEffect(() => {
         fetch("/holidays")
@@ -13,14 +18,17 @@ const Holidays = (props) => {
             (err) => console.log(err)
           )
           .then(
-            (parsedData) => props.setHoliday(parsedData),
+            (parsedData) => props.setHoliday(parsedData), // *1. can pass down setHolidays from app directy as well
             (err) => console.log(err)
     
           );
-      }, []);
+      }, [props]);
 
+
+    // versus express where we had method override /123?_method='DELETE'
+    // fetch can do a direct delete so no need to do the above override
     const deleteHoliday = (id) => {
-        fetch("/holidays/" + id, {
+        fetch(`/holidays/${id}`, {
           method: "DELETE",
         }).then((response) => {
           props.setHoliday(props.holidays.filter((day) => day._id !== id));
@@ -93,7 +101,7 @@ const Holidays = (props) => {
                         {props?.holidays?.map((holiday) => {
                         return (
                     <tr style={{cursor: "pointer"}} key={holiday._id} onMouseOver={()=>setHoliday(holiday)}>
-                            <td onDoubleClick={() => toggleCelebrated(holiday)} className={holiday.celebrated ? "celebrated" : null}> {holiday.name} Day</td>
+                            <td onDoubleClick={() => toggleCelebrated(holiday)} className={holiday.celebrated ? "celebrated" : "notcele"}> {holiday.name} Day</td>
                             <td> {holiday.likes}</td>
                             <td onClick={() => increaseLikes(holiday)}> <img src="https://www.kidzpartystore.com/img/c/12.jpg" alt="" width="20px" /></td>
                             <td><img src="https://previews.123rf.com/images/juliarstudio/juliarstudio1601/juliarstudio160100759/50501423-pencil-with-eraser-cartoon-icon-isolated-on-a-white-background.jpg" alt="pencil"  width="20px" onClick={() => toggleUpdateForm(holiday)}/></td>
@@ -104,7 +112,7 @@ const Holidays = (props) => {
             </tbody>
     </table>
 
-    <Show holiday={holiday} />
+    <Show holiday={holiday} increaseLikes={increaseLikes}  />
     </>
     )
 }

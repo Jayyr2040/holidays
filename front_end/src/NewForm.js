@@ -16,6 +16,29 @@ const NewForm = (props) => {
       }
 
 /*
+const handleSubmit = (event) => {
+        event.preventDefault();
+        const post = async () => {
+          const res = await fetch("/holidays", {
+          method: "POST",
+          body: JSON.stringify({ name: event.target.name.value }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const resJson = await res.json();
+            props.handleAddHoliday(resJson);
+          }
+          post();
+      }
+
+
+*/
+      
+
+
+
+/*
 same as above fetch actually
 curl 
 -X POST 
@@ -36,14 +59,14 @@ http://localhost:3003/holidays
     return (    
     <div>
         <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Holiday:</label>
+        <label htmlFor="name"></label>
         <input
             type="text"
             id="name"
             name="name"
-            placeholder="add a holiday"
+            placeholder="add name of holiday"
         />
-        <input type="submit" value="Add a Reason to Celebrate" />
+        <input type="submit" value="Create New Holiday" />
         </form>
     </div>
     )

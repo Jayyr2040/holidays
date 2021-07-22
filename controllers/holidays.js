@@ -1,5 +1,5 @@
 const express = require("express");
-const Holiday = require('../models/holidays')
+const Holiday = require('../models/holidays');
 const router = express.Router();
 
 // the API does below get,post, delete, put
