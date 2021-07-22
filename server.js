@@ -39,7 +39,11 @@ mongoose.connection.once("open", () => {
 });
 
 // middleware
-app.use(express.static('public'));
+// app.use(express.static('public')); 
+// instead public use below for jeoku deployment
+app.use(express.static('./front_end/build')); 
+
+
 app.use(express.json()); //use .json(), not .urlencoded() - to let them know we are passing json back and forth
 // all routes are now exposed, 
 // sometimes you just want to limit access 

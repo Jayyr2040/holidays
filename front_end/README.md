@@ -1,70 +1,87 @@
-# Getting Started with Create React App
+# MERN Stack
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Express Server
 
-## Available Scripts
+Other parts are mostly - MVC, Mongoose, Express listen
+We fix our express routes to start with v1 to not crash with react route routes
+Use 5 route for express
+/holidays => Get => show all holidays
+/holidays => POST => create 1 holiday
+/holidays/:id => GET => get 1 holiday
+/holidays/:id => PUT => update 1 holiday
+/holidays/:id => DELETE => delete 1 holiday
 
-In the project directory, you can run:
+js in holiday controller in express to avoid crash with react route
+const holidaysController = require("./controllers/holidays.js");
+app.use("/holidays", holidaysController); instead do below
+app.use("v1/holidays", holidaysController); to avoid crash
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## DotEnv
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Make sure all the variables for deployment stored in .env
+-PORT
+-MONGODB_URI
+-SECRET
 
-### `npm test`
+### Express Middleware
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Not use app.use(express.urlencoded()) use app.use(express.json())
+setup static for express to be app.use(express.static("./cra/build'))
+instead of setup static for express to be app.use(express.static("public'))
+if you need to use cors
+const cors = require("cors")
+app.use(cors()); This is before all your routes => open cors to all
 
-### `npm run build`
+To set a whitelist => 
+js
+const corsOptions = {
+    origin: [
+        "http://localhost:3000,
+        "https://fathomless-sierra-68956.herokuapp.com"
+    ]
+}
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+app.use(cors(corsOptions))
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## React - View
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Proxy => Development
 
-### `npm run eject`
+package.json
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+js
+"proxy": "http://localhost:3003/"
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Fetch => GET
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+js 
+fetch("/holidays")
+          .then(
+            (data) => data.json(),
+            (err) => console.log(err)
+          )
+          .then(
+            (parsedData) => props.setHoliday(parsedData),
+            (err) => console.log(err)
+    
+          );
+      }, []);
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Fetch => POST vs Curl
+bash
+curl -X POST -H "Content-Type: application/json" -d '{"name":"World Kindness"}' http://localhost:3003/holidays
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+js 
+fetch("/holidays", {
+          method: "POST",
+          body: JSON.stringify({ name: event.target.name.value }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => res.json())
+          .then((resJson) => {
+            props.handleAddHoliday(resJson);
+          })
+          .catch((error) => console.error({ Error: error }));
