@@ -4,6 +4,7 @@ const app = express();
 const PORT = process.env.PORT;
 const mongoose = require("mongoose");
 const MONGODB_URI = process.env.MONGODB_URI;
+const path = require('path');
 // const cors = require("cors");
 
 // only this site can access my express. if not default will be all
@@ -31,7 +32,7 @@ mongoose.connection.on("disconnected", () => console.log("mongo disconnected"));
 
 //...farther down the page
 
-mongoose.connect(MONGODB_URI, {
+mongoose.connect(MONGODB_URI || 'mongodb://localhost:27017/holidays', {
 useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true
 });
 mongoose.connection.once("open", () => {
@@ -55,6 +56,9 @@ app.use(express.json()); //use .json(), not .urlencoded() - to let them know we 
 const holidaysController = require("./controllers/holidays.js");
 app.use("/holidays", holidaysController);
 
+// For connecting to Atlas and deployment to HeroKu
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('./front_end/build')); }
 
 app.listen(PORT, () => {
   console.log("🎉🎊", "celebrations happening on port", PORT, "🎉🎊");
