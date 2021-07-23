@@ -1,4 +1,4 @@
-# MERN Stack
+# MERN Stack Week8 notes
 
 ## Express Server
 
